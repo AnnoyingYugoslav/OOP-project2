@@ -1,5 +1,7 @@
 package user;
 
+import java.util.Map;
+
 import image.imageBasic;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -23,6 +25,7 @@ public abstract class userAccount {
     protected String login;
     protected String password; //needs to be hashed
     protected imageBasic logo;
+    protected Long dateCreated;
 
     //private String hashPassword(String rawPassword);
         //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -51,5 +54,10 @@ public abstract class userAccount {
         //    this.name = name;
     public abstract void changePassowrd(String login, String password, String newPassword);
 
-    public abstract String loginUser(String login, String password); //change from void
+    public abstract Map<Integer, Object> loginUser(String login, String password); //change from void
+
+    public abstract String getLogin();
+
+    public abstract String getName();
+
 }

@@ -17,11 +17,12 @@ public class userViewer extends userAccount {
     //constructor
     public userViewer(){}
 
-    public userViewer(String name, String login, String rawPassword, imageBasic Logo){
+    public userViewer(String name, String login, String rawPassword/*, imageBasic Logo*/){
          this.name = name;
          this.login = login;
          this.password = hashPassword(rawPassword);
-         this.logo = logo;
+         /*this.logo = logo;*/
+         this.dateCreated = System.currentTimeMillis();
     }
     //additional functions
     private String hashPassword(String rawPassword){
@@ -51,22 +52,35 @@ public class userViewer extends userAccount {
         }
     }
     //login getters
-    public String loginUser(String login, String password){
-        if(checkUserAccount(login, password)){
+    public Map<Integer, Object> loginUser(String login, String password) {
+        Map<Integer, Object> fail = new HashMap<>();
+        fail.put(1, false);
+        fail.put(2, "");
+        fail.put(3, "");
+    
+        Map<Integer, Object> newMapData = new HashMap<>();
+    
+        if (checkUserAccount(login, password)) {
             try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                Map<String, Object> imageData = new HashMap<>();
-                imageData.put("imageBase64", logo.getImage());
-                imageData.put("name", name);
-                return objectMapper.writeValueAsString(imageData);
-            }
-            catch (Exception e) {
+                newMapData.put(1, true);
+                newMapData.put(2, id);
+                newMapData.put(3, logo);
+            } catch (Exception e) {
                 e.printStackTrace();
-                return null;
+                return fail;
             }
+        } else {
+            return fail;
         }
-        else{
-            return null;
-        }
+    
+        return newMapData;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getName() {
+        return name;
     }
 }
