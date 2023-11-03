@@ -1,13 +1,14 @@
-package user;
+package com.example.demo.user;
 
 import java.util.HashMap;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.example.demo.image.imageBasic;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
-import image.imageBasic;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -82,5 +83,9 @@ public class userViewer extends userAccount {
 
     public String getName() {
         return name;
+    }
+
+    public Long getId(){
+        return id;
     }
 }

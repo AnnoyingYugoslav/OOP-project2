@@ -1,8 +1,9 @@
-package user;
+package com.example.demo.user;
 
 import java.util.Map;
 
-import image.imageBasic;
+import com.example.demo.image.imageBasic;
+
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -59,5 +60,7 @@ public abstract class userAccount {
     public abstract String getLogin();
 
     public abstract String getName();
+
+    public abstract Long getId();
 
 }

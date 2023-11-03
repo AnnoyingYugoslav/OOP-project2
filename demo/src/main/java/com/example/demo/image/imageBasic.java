@@ -1,4 +1,4 @@
-package image;
+package com.example.demo.image;
 
 import java.util.List;
 
@@ -6,13 +6,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 
 @Entity
 public class imageBasic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String imageBase64;
+    @Lob
+    private byte[] imageBase64;
     private Boolean isPublic;
     private List<String> tags;
     private Long lastModified;
@@ -24,7 +26,7 @@ public class imageBasic {
         this.dateCreated = System.currentTimeMillis();
     }
 
-    public imageBasic(String imageBase64, Boolean isPublic, List<String> tags){
+    public imageBasic(byte[] imageBase64, Boolean isPublic, List<String> tags){
         this.imageBase64 = imageBase64;
         this.tags = tags;
         this.isPublic = isPublic;
@@ -37,7 +39,7 @@ public class imageBasic {
     }
     
     //getters
-    public String getImage(){
+    public byte[] getImage(){
         return this.imageBase64;
     }
     public Boolean getPublic(){

@@ -1,11 +1,11 @@
-package user;
+package com.example.demo.user;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.example.demo.image.imageBasic;
 
-import image.imageBasic;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -62,5 +62,19 @@ public class userArtist extends userViewer{
     }
     public void removeImage(imageBasic imageData){
         this.listOfArt.remove(imageData);
+    }
+    public List<imageBasic> getListOfArt(){
+        return this.listOfArt;
+    }
+    public List<imageBasic> getListOfPublicArt(){
+        List<imageBasic> listOfPublicArt = new ArrayList<>();
+        Integer counter = listOfArt.size();
+        for(int i = 0; i < counter; i++){
+            imageBasic temPorary = listOfArt.get(i);
+            if(temPorary.getPublic()){
+                listOfPublicArt.add(temPorary);
+            }
+        }
+        return listOfPublicArt;
     }
 }
