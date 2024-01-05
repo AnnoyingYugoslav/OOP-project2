@@ -374,7 +374,7 @@ public class userAccounthandler {
         String password = (String) newMapData.get(passwordKey);
         String image = (String) newMapData.get(imageKey);
         String name = (String) newMapData.get(nameKey);
-        List<String> tags = (List<String>) newMapData.get(tagsKey);
+        Set<String> tags = (Set<String>) newMapData.get(tagsKey);
         Boolean isPublic = (Boolean) newMapData.get(publicKey);
         userArtist user = artistRepository.findIdByLogin(login);
         resultMap.put(0, "fail");
@@ -384,6 +384,8 @@ public class userAccounthandler {
         }
         if(user.checkUserAccount(login, password)){
             imageBasic newImage = new imageBasic(image, isPublic, user);
+            user.addImage(newImage);
+            newImage.addTags(tags);
             user.addImage(newImage);
             artistRepository.save(user);
             imageRepository.save(newImage);
