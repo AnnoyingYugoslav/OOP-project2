@@ -2,61 +2,47 @@ package com.example.demo.user;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.demo.image.imageBasic;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
-@DiscriminatorValue("entityArtist")
-public class userArtist extends userViewer{
+@Table(name = "artist")
+public class userArtist extends userAccount{
 
-    private List<imageBasic> listOfArt; //tymczasowe
 
-   /* public userArtist(){}
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "artist", orphanRemoval = true)
+    private List<imageBasic> listOfArt;
+
+    public userArtist(){}
 
     public userArtist(String name, String login, String rawPassword, String Logo){
-         this.name = name;
-         this.login = login;
-         this.password = hashPassword(rawPassword);
-         this.logo = logo;
+        this.name = name;
+        this.login = login;
+        this.password = hashPassword(rawPassword);
+        this.listOfArt = new ArrayList<>();
+         //this.logo = logo;
     }
 
-    private String hashPassword(String rawPassword){
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.encode(rawPassword);
-    }
-
-    public  Boolean checkUserAccount(String login, String password){
-       if(this.login.equals(login)){
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if(passwordEncoder.matches(password, this.password)){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public void changeDetail(String name, String logo, String login, String password){
-        if(checkUserAccount(login, password)){
-            this.name = name;
-            this.logo = logo;
-        }
-    }
-    public void changePassowrd(String login, String password, String newPassword){
-        if(checkUserAccount(login, password)){
-            this.password = hashPassword(newPassword);
-        }
-    }
-    public  Boolean loginUser(String login, String password){
-        if(checkUserAccount(login, password)){
-            return true;
-        }
-        return false;
-    }
-    */
     public void newImage(imageBasic newImageData){
         this.listOfArt.add(newImageData);
     }
@@ -66,6 +52,22 @@ public class userArtist extends userViewer{
     public List<imageBasic> getListOfArt(){
         return this.listOfArt;
     }
+    public imageBasic getLogo(){
+        if(!this.listOfArt.isEmpty()){
+            return this.listOfArt.get(0);
+        }
+        System.out.println("the fuck y mean");
+        imageBasic nowe = new imageBasic();
+        return nowe;
+    }
+    public void changeLogo(imageBasic newlogo){
+        this.listOfArt.addFirst(newlogo);
+    }
+    public void addImage(imageBasic newImage){
+        this.listOfArt.add(newImage);
+    }
+
+    /* 
     public List<imageBasic> getListOfPublicArt(){
         List<imageBasic> listOfPublicArt = new ArrayList<>();
         Integer counter = listOfArt.size();
@@ -77,4 +79,5 @@ public class userArtist extends userViewer{
         }
         return listOfPublicArt;
     }
+    */
 }

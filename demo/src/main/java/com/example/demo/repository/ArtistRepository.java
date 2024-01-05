@@ -11,8 +11,11 @@ import com.example.demo.user.userAccount;
 import com.example.demo.user.userArtist;
 import com.example.demo.user.userViewer;
 
-public interface UserRepository extends JpaRepository<userViewer, Long> {
-    userViewer findIdByLogin(String login);
-    userViewer findIdByName(String name);
-    userViewer findUserById(Long id);
+public interface ArtistRepository extends JpaRepository<userArtist, Long> {
+    userArtist findIdByLogin(String login);
+    userArtist findIdByName(String name);
+    userArtist findUserById(Long id);
+
+    @Query("SELECT u.id FROM userArtist u")
+    List<Long> findAllIds();
 }
