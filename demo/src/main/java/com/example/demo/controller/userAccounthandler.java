@@ -385,6 +385,8 @@ public class userAccounthandler {
         if(user.checkUserAccount(login, password)){
             imageBasic newImage = new imageBasic(image, isPublic, user);
             user.addImage(newImage);
+            artistRepository.save(user);
+            imageRepository.save(newImage);
             resultMap.put(0, "success");
         }
         String jsonResponse = convertMapToJson(resultMap);
