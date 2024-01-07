@@ -1,14 +1,14 @@
-function button1Clicked() {
+function Createa() {
     // Get the field values
-    const field1Value = document.getElementById("field1").value;
-    const field2Value = document.getElementById("field2").value;
-    const field3Value = document.getElementById("field3").value;
+    const LoginValue = document.getElementById("Login").value;
+    const PasswordValue = document.getElementById("Password").value;
+    const NicknameValue = document.getElementById("Nickname").value;
 
     // Create a JavaScript object with the field values
     const data = {
-        1: field1Value,
-        2: field2Value,
-        3: field3Value
+        1: LoginValue,
+        2: PasswordValue,
+        3: NicknameValue
     };
 
     // Send the data to the backend
@@ -31,6 +31,7 @@ function button1Clicked() {
 
         if (isSuccess === true) {
             console.log("Info: Creation true");
+            document.location.href="index.html?success";
         } else if (isSuccess === false) {
             console.log("Info: Creation false");
         } else {
@@ -42,15 +43,15 @@ function button1Clicked() {
     });
 }
 // script.js
-function button2Clicked() {
+function Logina() {
     // Get the field values
-    const field1Value = document.getElementById("field1").value;
-    const field2Value = document.getElementById("field2").value;
+    const LoginValue = document.getElementById("Login").value;
+    const PasswordValue = document.getElementById("Password").value;
 
     // Create a JavaScript object with the field values
     const data = {
-        1: field1Value,
-        2: field2Value
+        1: LoginValue,
+        2: PasswordValue
     };
 
     // Send the data to the backend
@@ -68,6 +69,55 @@ function button2Clicked() {
         console.log("1:", responseData[1]);
         console.log("2:", responseData[2]);
         console.log("3:", responseData[3]);
+        if (responseData[1]){
+            sessionStorage.setItem("Nickname", responseData[2]);
+            sessionStorage.setItem("Logo", responseData[3]);
+            document.location.href="mainpage.html";
+        }
+        else{
+            const infoElement = document.getElementById('info');
+            infoElement.innerText = 'There is no such account';
+            document.getElementById("myForm").reset();
+        } 
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+function logout() {
+    sessionStorage.clear();
+    document.location.href="index.html";
+}
+function chpswd() {
+    const LoginValue = sessionStorage.getItem('Nickname');
+    const PasswordValue = document.getElementById("Password").value;
+    const Password2Value = document.getElementById("Password2").value;
+
+    const data = {
+        1: LoginValue,
+        2: PasswordValue,
+        3: Password2Value
+    };
+
+    fetch('/changepassword', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        console.log("Received data:");
+        console.log("1:", responseData[1]);
+        if (responseData[1]){
+            document.location.href="mainpage.html?success2";
+        }
+        else{
+            const infoElement = document.getElementById('info');
+            document.getElementById("myForm").reset();
+            infoElement.innerText = 'Podano zle haslo';
+        } 
     })
     .catch(error => {
         console.error('Error:', error);
@@ -75,16 +125,16 @@ function button2Clicked() {
 }
 function button3Clicked() {
     // Get the field values
-    const field1Value = document.getElementById("field1").value;
-    const field2Value = document.getElementById("field2").value;
-    const field3Value = document.getElementById("field3").value;
+    const LoginValue = document.getElementById("Login").value;
+    const PasswordValue = document.getElementById("Password").value;
+    const NicknameValue = document.getElementById("Nickname").value;
     const field4Value = document.getElementById("field4").value;
 
     // Create a JavaScript object with the field values
     const data = {
-        1: field1Value,
-        2: field2Value,
-        3: field3Value,
+        1: LoginValue,
+        2: PasswordValue,
+        3: NicknameValue,
         4: field4Value
     };
 
@@ -107,4 +157,14 @@ function button3Clicked() {
     .catch(error => {
         console.error('Error:', error);
     });
+}
+const urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.has('success')) {
+    const infoElement = document.getElementById('info');
+    infoElement.innerText = 'Account has been created';
+}
+if (urlParams.has('success2')) {
+    const infoElement = document.getElementById('info');
+    infoElement.innerText = 'Password has been changed';
 }

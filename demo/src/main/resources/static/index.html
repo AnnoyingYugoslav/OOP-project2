@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Sample Webpage</title>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Sample Webpage with Text Fields and Buttons</h1>
+    <div id="witaj">
+        <h1>Welcome to the main page</h1>
+      </div>
+    <div id="srodek">
+    <h1>Log in:</h1>
 
-    <form>
-        <label for="field1">Field 1:</label>
-        <input type="text" id="field1" name="field1"><br>
-
-        <label for="field2">Field 2:</label>
-        <input type="text" id="field2" name="field2"><br>
-
-        <label for="field3">Field 3:</label>
-        <input type="text" id="field3" name="field3"><br><br>
-
+    <form id="myForm">
+        <label for="Login">Login</label>
+        <input type="text" id="Login" name="Login"><br>
+        <label for="Password">Password</label>
+        <input type="password" id="Password" name="Password"><br>
         <label for="field4">Field 4:</label>
         <input type="text" id="field4" name="field4"><br><br>
 
-        <button type="button" onclick="button1Clicked()">Button 1</button>
-        <button type="button" onclick="button2Clicked()">Button 2</button>
+        <button type="button" onclick="Logina()">Log in</button>
+        <a href="createa.html">
+            <button type="button">Create account</button>
+        </a>
         <button type="button" onclick="button3Clicked()">Button 3</button>
     </form>
-
+    </div>
+    <div id="info">
+    </div>
     <script src="spript.js"></script>
 </body>
 </html>

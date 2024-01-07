@@ -1,0 +1,63 @@
+table, tr, td {
+    border: 1px solid grey;
+    text-align:center;
+    padding: 8px;
+    border-collapse: collapse;
+  }
+  th{
+    border: 1px solid grey;
+    text-align:center;
+    padding: 8px;
+    border-collapse: collapse;
+    background-color: blue;
+    color: white;
+  }
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  html{
+    background-color: lightblue;
+    font-family: verdana;
+  }
+  #login{
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  input[type=submit], input[type=reset]{
+    border-radius: 5px;
+    border: 0;
+    width: 80px;
+    height:25px;
+  }
+  #witaj{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    height: 100px;
+    background-color: blue;
+    color: white;
+    font-size: 40px;
+  }
+  footer{
+    background-color: blue;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+  }
+  a{
+    text-decoration: none;
+    color: white;
+  }
+  #srodek, #dol{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 100px;
+    text-align: center;
+  }
+  

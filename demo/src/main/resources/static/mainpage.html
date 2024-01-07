@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="witaj">
+        <h1>User page</h1>
+      </div>
+    <div id="srodek">
+        <div id="user"></div>
+        <a href="chpswd.html">
+            <button type="button">Change password</button>
+        </a>
+        <button type="button" onclick="logout()">Log out</button>
+    <div id="info">
+    </div>
+    <script>
+        const Nicknameu = sessionStorage.getItem('Nickname');
+        if (Nicknameu){
+            const userInfo = document.getElementById('user');
+            userInfo.innerText = `Welcome, ${Nicknameu}!`;
+        }
+        else{
+            window.location.href = 'index.html';
+        }
+    </script>
+    <script src="spript.js"></script>
+</body>
+</html>
