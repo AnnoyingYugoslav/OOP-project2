@@ -71,8 +71,9 @@ function Logina() {
         console.log("3:", responseData[3]);
         if (responseData[1]){
             sessionStorage.setItem("Nickname", responseData[2]);
-            sessionStorage.setItem("Logo", responseData[3]);
-            document.location.href="mainpage.html";
+            sessionStorage.setItem("Password", PasswordValue);
+            sessionStorage.setItem("Logo", responseData[3].imageData);
+            returnp();
         }
         else{
             const infoElement = document.getElementById('info');
@@ -84,6 +85,14 @@ function Logina() {
         console.error('Error:', error);
     });
 }
+function returnp(){
+    if (sessionStorage.getItem('Logo') == 'undefined'){
+        document.location.href="mainpage.html";
+    }
+    else{
+        document.location.href="artistpage.html";
+    }
+}
 function logout() {
     sessionStorage.clear();
     document.location.href="index.html";
@@ -92,7 +101,9 @@ function chpswd() {
     const LoginValue = sessionStorage.getItem('Nickname');
     const PasswordValue = document.getElementById("Password").value;
     const Password2Value = document.getElementById("Password2").value;
-
+    console.log(LoginValue);
+    console.log(PasswordValue);
+    console.log(Password2Value);
     const data = {
         1: LoginValue,
         2: PasswordValue,
@@ -111,6 +122,7 @@ function chpswd() {
         console.log("Received data:");
         console.log("1:", responseData[1]);
         if (responseData[1]){
+            sessionStorage.setItem("Password", Password2Value);
             document.location.href="mainpage.html?success2";
         }
         else{

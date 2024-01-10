@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User page</title>
+    <title>Artist page</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="witaj">
-        <h1>User page</h1>
+        <h1>Artist page</h1>
       </div>
     <div id="srodek">
+        <img id="logop" alt="logo">
         <div id="user"></div>
         <a href="draw.html">
-            <button id="drawBTN">Create your first logo</button>
+            <button id="drawBTN">Change your logo</button>
         </a>
         <a href="chpswd.html">
             <button type="button">Change password</button>
@@ -23,7 +24,8 @@
     <script>
         const Nicknameu = sessionStorage.getItem('Nickname');
         const drawButton = document.getElementById("drawBTN");
-        var logodata = sessionStorage.getItem('Logo');
+        const logo = document.getElementById('logop');
+        logo.src = sessionStorage.getItem('Logo');
         if (Nicknameu){
             const userInfo = document.getElementById('user');
             userInfo.innerText = `Welcome, ${Nicknameu}!`;
