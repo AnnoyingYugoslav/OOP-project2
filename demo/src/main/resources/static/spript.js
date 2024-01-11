@@ -70,6 +70,7 @@ function Logina() {
         console.log("2:", responseData[2]);
         console.log("3:", responseData[3]);
         if (responseData[1]){
+            sessionStorage.setItem("Login", LoginValue);
             sessionStorage.setItem("Nickname", responseData[2]);
             sessionStorage.setItem("Password", PasswordValue);
             sessionStorage.setItem("Logo", responseData[3].imageData);
@@ -98,7 +99,7 @@ function logout() {
     document.location.href="index.html";
 }
 function chpswd() {
-    const LoginValue = sessionStorage.getItem('Nickname');
+    const LoginValue = sessionStorage.getItem('Login');
     const PasswordValue = document.getElementById("Password").value;
     const Password2Value = document.getElementById("Password2").value;
     console.log(LoginValue);
@@ -135,23 +136,15 @@ function chpswd() {
         console.error('Error:', error);
     });
 }
-function button3Clicked() {
-    // Get the field values
-    const LoginValue = document.getElementById("Login").value;
-    const PasswordValue = document.getElementById("Password").value;
-    const NicknameValue = document.getElementById("Nickname").value;
-    const field4Value = document.getElementById("field4").value;
-
-    // Create a JavaScript object with the field values
+function getrandomimages() {
+    const imageContainer = document.getElementById('images');
+    const Amount = 3;
+    console.log(Amount);
     const data = {
-        1: LoginValue,
-        2: PasswordValue,
-        3: NicknameValue,
-        4: field4Value
+        1: Amount
     };
 
-    // Send the data to the backend
-    fetch('/convert', {
+    fetch('/getrandomimages', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -160,11 +153,48 @@ function button3Clicked() {
     })
     .then(response => response.json())
     .then(responseData => {
-        // Log the received data to the console
+        imageContainer.innerHTML = '';
         console.log("Received data:");
-        console.log("1:", responseData[1]);
-        console.log("2:", responseData[2]);
-        console.log("3:", responseData[3]);
+        console.log("0:", responseData[0]);
+        // var amount = responseData[0];
+        for (let i = 2; i <= Amount + 1; i++){
+            console.log(i, responseData[i].imageData);
+            const imageInfo = responseData[i].imageData;
+            const imgElement = document.createElement('img');
+            imgElement.src = imageInfo;
+            console.log(imageInfo);
+            imgElement.alt = 'Random Image';
+            imgElement.width = 200;
+            imgElement.height = 200; 
+            imageContainer.appendChild(imgElement);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+function getuserimages() {
+    const imageContainer = document.getElementById('images');
+    const userid = 2;
+    const data = {
+        1: userid
+    };
+
+    fetch('/getuserimages', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        imageContainer.innerHTML = '';
+        console.log("Received data:");
+        console.log("0:", responseData[0]);
+        console.log("1:", responseData[0]);
+        console.log("2:", responseData[0]);
+        console.log("3:", responseData[0]);
     })
     .catch(error => {
         console.error('Error:', error);

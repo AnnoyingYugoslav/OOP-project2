@@ -44,9 +44,10 @@ table, tr, td {
     font-size: 40px;
   }
   #logop{
-    width: 300px; /* Ustawia szerokość na 300 pikseli */
-    height: auto; /* Zachowuje proporcje wysokości */
+    width: 300px;
+    height: auto;
   }
+
   footer{
     background-color: blue;
     height: 50px;

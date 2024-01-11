@@ -48,19 +48,20 @@ createcanvas()
 saveButton.addEventListener('click', function () {
     html2canvas(container, { scale: 5 }).then(canvas => {
         const base64Image = canvas.toDataURL('image/png');
-        // downloadImage(base64Image, 'pixel_art.png');
-        // Save the base64 image to sessionStorage
-        sessionStorage.setItem('Logo', base64Image);
-        convert();
-        // Optionally, you can also display the image or perform other actions
-        // For example, you can set the src attribute of an image element with the saved image
-        // const savedImageElement = document.getElementById('saved-image');
-        // savedImageElement.src = base64Image;
+        if (sessionStorage.getItem('Logo') == 'undefined'){
+            sessionStorage.setItem('Logo', base64Image);
+            convert();
+        }
+        else{
+            sessionStorage.setItem('Logo', base64Image);
+            changelogo();
+        }
+        
     });
 });
 function convert() {
     // Get the field values
-    const LoginValue = sessionStorage.getItem('Nickname');
+    const LoginValue = sessionStorage.getItem('Login');
     const PasswordValue = sessionStorage.getItem('Password');
     const LogoValue = sessionStorage.getItem('Logo');
 
@@ -97,7 +98,47 @@ function convert() {
         console.error('Error:', error);
     });
 }
+function changelogo(){
+// Get the field values
+const LoginValue = sessionStorage.getItem('Login');
+const PasswordValue = sessionStorage.getItem('Password');
+const NicknameValue = sessionStorage.getItem("Nickname");
+const LogoValue = sessionStorage.getItem('Logo');
 
+// Create a JavaScript object with the field values
+const data = {
+    1: LoginValue,
+    2: PasswordValue,
+    3: NicknameValue,
+    4: LogoValue
+};
+
+// Send the data to the backend
+fetch('/changdetail', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(responseData => {
+    // Log the received data to the console
+    console.log("Received data:");
+    console.log("1:", responseData[1]);
+    if (responseData[1]){
+        const infoElement = document.getElementById('info');
+        infoElement.innerText = 'Logo was updated!';
+    }
+    else{
+        const infoElement = document.getElementById('info');
+        infoElement.innerText = 'Error';
+    } 
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+}
 function downloadImage(data, filename) {
     const a = document.createElement('a');
     a.href = data;
