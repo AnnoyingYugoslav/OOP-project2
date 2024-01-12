@@ -147,6 +147,16 @@ public class userAccounthandler {
                 return jsonResponse;
             }
         }
+        user = artistRepository.findIdByLogin(login);
+        if(user instanceof userArtist){
+            userArtist viewer = (userArtist) user;
+            if(0 == viewer.changePassowrd(login,password,newpassword)){
+                artistRepository.save(viewer);
+                resultMap.put(1,true);
+                String jsonResponse = convertMapToJson(resultMap);
+                return jsonResponse;
+            }
+        }
         } catch (Exception e) {
            String jsonResponse = convertMapToJson(resultMap);
             return jsonResponse;
@@ -179,7 +189,7 @@ public class userAccounthandler {
                         mySet.add("logo");
                         newImage.setTags(mySet);
                         image = newImage;
-                        viewer.getListOfArt().add(newImage);
+                        viewer.changeLogo(newImage);
                         artistRepository.save(viewer);
                         resultMap.put(1,true);
                         String jsonResponse = convertMapToJson(resultMap);
@@ -340,9 +350,9 @@ public class userAccounthandler {
      @PostMapping("/getuserimages") //get 1: user id -> return 1: number of returns 2 to n: images basic
     public String getUserImages(@RequestBody Map<Integer, Object> newMapData){
         Integer idKey = 1;
-        Long id = (Long) newMapData.get(idKey);
+        String id = (String) newMapData.get(idKey);
         Map<Integer, Object> resultMap = new HashMap<>();
-        userArtist user = artistRepository.findUserById(id);
+        userArtist user = artistRepository.findUserByName(id);
         Integer counter = 0;
         resultMap.put(0, 0);
         if(!(user instanceof userArtist)){

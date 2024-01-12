@@ -13,7 +13,7 @@ import com.example.demo.user.userViewer;
 
 public interface ArtistRepository extends JpaRepository<userArtist, Long> {
     userArtist findIdByLogin(String login);
-    userArtist findIdByName(String name);
+    userArtist findUserByName(String name);
     userArtist findUserById(Long id);
 
     @Query("SELECT u.id FROM userArtist u")
