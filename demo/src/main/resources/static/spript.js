@@ -124,7 +124,12 @@ function chpswd() {
         console.log("1:", responseData[1]);
         if (responseData[1]){
             sessionStorage.setItem("Password", Password2Value);
-            document.location.href="mainpage.html?success2";
+            if (sessionStorage.getItem('Logo') == 'undefined'){
+                document.location.href="mainpage.html?success2=true";
+            }
+            else{
+                document.location.href="artistpage.html?success2=true";
+            }
         }
         else{
             const infoElement = document.getElementById('info');
@@ -156,7 +161,42 @@ function getrandomimages() {
         imageContainer.innerHTML = '';
         console.log("Received data:");
         console.log("0:", responseData[0]);
-        // var amount = responseData[0];
+        for (let i = 2; i <= Amount + 1; i++){
+            console.log(i, responseData[i].imageData);
+            const imageInfo = responseData[i].imageData;
+            const imgElement = document.createElement('img');
+            imgElement.src = imageInfo;
+            console.log(imageInfo);
+            imgElement.alt = 'Random Image';
+            imgElement.width = 200;
+            imgElement.height = 200; 
+            imageContainer.appendChild(imgElement);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+function getnewimages() {
+    const imageContainer = document.getElementById('images');
+    const Amount = 3;
+    console.log(Amount);
+    const data = {
+        1: Amount
+    };
+
+    fetch('/getnewimages', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        imageContainer.innerHTML = '';
+        console.log("Received data:");
+        console.log("0:", responseData[0]);
         for (let i = 2; i <= Amount + 1; i++){
             console.log(i, responseData[i].imageData);
             const imageInfo = responseData[i].imageData;
@@ -175,7 +215,8 @@ function getrandomimages() {
 }
 function getuserimages() {
     const imageContainer = document.getElementById('images');
-    const userid = 2;
+    const userid = document.getElementById('textInput').value;
+    document.getElementById('inputPopup').style.display = 'none';
     const data = {
         1: userid
     };
@@ -190,15 +231,30 @@ function getuserimages() {
     .then(response => response.json())
     .then(responseData => {
         imageContainer.innerHTML = '';
-        console.log("Received data:");
-        console.log("0:", responseData[0]);
-        console.log("1:", responseData[0]);
-        console.log("2:", responseData[0]);
-        console.log("3:", responseData[0]);
+        Amount = responseData[0];
+        console.log(responseData[0]);
+        if (Amount==0){
+            const infoElement = document.getElementById('info');
+            infoElement.innerText = 'Nothing has been found';
+        }
+        else{
+            for (let i = 2; i <= Amount + 1; i++){
+                const imageInfo = responseData[i].imageData;
+                const imgElement = document.createElement('img');
+                imgElement.src = imageInfo;
+                imgElement.alt = 'Random Image';
+                imgElement.width = 200;
+                imgElement.height = 200; 
+                imageContainer.appendChild(imgElement);
+            }
+        } 
     })
     .catch(error => {
         console.error('Error:', error);
     });
+}
+function searchuser() {
+    document.getElementById('inputPopup').style.display = 'block';
 }
 const urlParams = new URLSearchParams(window.location.search);
 
@@ -210,15 +266,53 @@ if (urlParams.has('success2')) {
     const infoElement = document.getElementById('info');
     infoElement.innerText = 'Password has been changed';
 }
-const selectedTags = [];
-        function saveTag(checkbox) {
-            const tagValue = checkbox.value;
-            if (checkbox.checked) {
-                selectedTags.push(tagValue);
-            } else {
-                const index = selectedTags.indexOf(tagValue);
-                if (index !== -1) {
-                    selectedTags.splice(index, 1);
-                }
-            }
-        }
+if (urlParams.has('success3')) {
+    const infoElement = document.getElementById('info');
+    infoElement.innerText = 'Image has been uploaded';
+}
+let tagList = new Set();
+
+function saveTag(checkbox) {
+    if (checkbox.checked) {
+        tagList.add(checkbox.value);
+    } else {
+        tagList.delete(checkbox.value);
+    }
+}
+function UploadI() {
+    const LoginValue = sessionStorage.getItem('Login');
+    const PasswordValue = sessionStorage.getItem('Password');
+    const ImageData = sessionStorage.getItem('temppic');
+    const ImageName = document.getElementById("imgname").value;
+    const IsPrivate = !document.getElementById('private').checked;
+    const Amount = tagList.size;
+    const data = {
+        1: LoginValue,
+        2: PasswordValue,
+        3: ImageData,
+        4: ImageName,
+        5: Amount,
+        6: IsPrivate
+    };
+    const tagArray = Array.from(tagList);
+    tagArray.forEach((tag, index) => {
+        data[index + 7] = tag;
+    });
+    console.log(data);
+    fetch('/createimage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        console.log("Received data:");
+        console.log("0:", responseData[0]);
+        document.location.href="artistpage.html?success3=true";
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}

@@ -23,8 +23,14 @@
             <button type="button">Change password</button>
         </a>
         <button onclick="getrandomimages()">Get random images</button>
-        <button onclick="getuserimages()">Get user images</button>
+        <button onclick="getnewimages()">Get newest images</button>
+        <button onclick="searchuser()">Get user images</button>
         <button type="button" onclick="logout()">Log out</button>
+        <div id="inputPopup">
+            <label for="textInput">User to search:</label>
+            <input type="text" id="textInput">
+            <button onclick="getuserimages()">Search</button>
+        </div>
     <div id="info">
     </div>
     <script>

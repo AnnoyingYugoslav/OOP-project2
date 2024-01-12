@@ -47,6 +47,9 @@ table, tr, td {
     width: 300px;
     height: auto;
   }
+  #inputPopup{
+    display: none;
+  }
 
   footer{
     background-color: blue;
