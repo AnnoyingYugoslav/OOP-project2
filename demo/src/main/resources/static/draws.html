@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="styledraw.css">
-    <title>Logo creation</title>
+    <title>Drawing</title>
 </head>
 <body>
     <div class="navbar">
@@ -15,22 +15,15 @@
     <div class="container" id="container">
     </div>
     <div id="info"></div>
-    <button id="save-button">Upload this logo</button>
+    <button id="uploadbutton">Upload this image</button>
     <button onclick="returnp()">Return to main page</button>
     <script>
-        const saveButton = document.getElementById('save-button');
-        saveButton.addEventListener('click', function () {
+        const uploadButton = document.getElementById('uploadbutton')
+        uploadButton.addEventListener('click', function () {
         html2canvas(container, { scale: 5 }).then(canvas => {
         const base64Image = canvas.toDataURL('image/png');
-        if (sessionStorage.getItem('Logo') == 'undefined'){
-            sessionStorage.setItem('Logo', base64Image);
-            convert();
-        }
-        else{
-            sessionStorage.setItem('Logo', base64Image);
-            changelogo();
-        }
-        
+        sessionStorage.setItem('temppic', base64Image);
+        document.location.href="upload.html";
     });
 });
     </script>

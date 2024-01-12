@@ -210,3 +210,15 @@ if (urlParams.has('success2')) {
     const infoElement = document.getElementById('info');
     infoElement.innerText = 'Password has been changed';
 }
+const selectedTags = [];
+        function saveTag(checkbox) {
+            const tagValue = checkbox.value;
+            if (checkbox.checked) {
+                selectedTags.push(tagValue);
+            } else {
+                const index = selectedTags.indexOf(tagValue);
+                if (index !== -1) {
+                    selectedTags.splice(index, 1);
+                }
+            }
+        }

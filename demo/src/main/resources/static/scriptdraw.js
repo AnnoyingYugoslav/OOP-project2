@@ -2,7 +2,6 @@ const container = document.querySelector('.container')
 const color = document.querySelector('.color')
 const resetBtn = document.getElementById('reset')
 const eraserBtn = document.getElementById('eraser')
-const saveButton = document.getElementById('save-button');
 let draw = false
 let eraserMode = false;
 
@@ -45,20 +44,6 @@ color.addEventListener('click', function () {
 
 createcanvas()
 
-saveButton.addEventListener('click', function () {
-    html2canvas(container, { scale: 5 }).then(canvas => {
-        const base64Image = canvas.toDataURL('image/png');
-        if (sessionStorage.getItem('Logo') == 'undefined'){
-            sessionStorage.setItem('Logo', base64Image);
-            convert();
-        }
-        else{
-            sessionStorage.setItem('Logo', base64Image);
-            changelogo();
-        }
-        
-    });
-});
 function convert() {
     // Get the field values
     const LoginValue = sessionStorage.getItem('Login');

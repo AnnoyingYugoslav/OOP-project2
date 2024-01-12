@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Uploading</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="witaj">
+        <h1>Upload an image</h1>
+      </div>
+    <div id="srodek">
+    <form>
+        <label for="imgname">Image name</label>
+        <input type="text" id="imgname" name="imgname"><br>
+        <legend>Tags:</legend>
+        <label>
+            <input type="checkbox" value="Animals" onchange="saveTag(this)"> Animals
+        </label>
+        <label>
+            <input type="checkbox" value="Nature" onchange="saveTag(this)"> Nature
+        </label>
+        <label>
+            <input type="checkbox" value="Fantasy" onchange="saveTag(this)"> Fantasy
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" value="Funny" onchange="saveTag(this)"> Funny
+        </label>
+        <label>
+            <input type="checkbox" value="Cute" onchange="saveTag(this)"> Cute
+        </label>
+        <label>
+            <input type="checkbox" value="Abstract art" onchange="saveTag(this)"> Abstract art
+        </label>
+        <br>
+        <label for="private">Make it private</label>
+        <input type="checkbox" id="private" name="private"><br><br>
+        <button type="button" onclick="UploadI()">Upload</button>
+        <a href="draws.html">
+        <button type="button">Back to drawing</button>
+        </a>
+    </form>
+    <script src="spript.js"></script>
+</body>
+</html>
