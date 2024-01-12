@@ -371,7 +371,7 @@ public class userAccounthandler {
         return jsonResponse;
     }
 
-    @PostMapping("/createimage") //get 1:login 2:password 3:imagedata 4:imagename 5: List of tags 6:ispublic -> return 1:success || 1:fail
+    @PostMapping("/createimage") //get 1:login 2:password 3:imagedata 4:imagename 5: number of tags 6:ispublic 7: - x tags -> return 1:success || 1:fail
     public String createImage(@RequestBody Map<Integer, Object> newMapData){
         Map<Integer, Object> resultMap = new HashMap<>();
         Integer loginKey = 1;
@@ -380,12 +380,14 @@ public class userAccounthandler {
         Integer nameKey = 4;
         Integer tagsKey = 5;
         Integer publicKey = 6;
+        Integer currentTag = 7;
         String login = (String) newMapData.get(loginKey);
         String password = (String) newMapData.get(passwordKey);
         String image = (String) newMapData.get(imageKey);
         String name = (String) newMapData.get(nameKey);
-        Set<String> tags = (Set<String>) newMapData.get(tagsKey);
+        Integer tags = (Integer) newMapData.get(tagsKey);
         Boolean isPublic = (Boolean) newMapData.get(publicKey);
+        String newTag;
         userArtist user = artistRepository.findIdByLogin(login);
         resultMap.put(0, "fail");
         if(!(user instanceof userArtist)){
@@ -395,7 +397,13 @@ public class userAccounthandler {
         if(user.checkUserAccount(login, password)){
             imageBasic newImage = new imageBasic(image, isPublic, user);
             user.addImage(newImage);
-            newImage.addTags(tags);
+            Set<String> toAdd = new HashSet<>() ;
+            for(int i = 0; i < tags; i++){
+                currentTag = currentTag + i;
+                newTag = (String) newMapData.get(currentTag);
+                toAdd.add(newTag);
+            }
+            newImage.addTags(toAdd);
             user.addImage(newImage);
             artistRepository.save(user);
             imageRepository.save(newImage);
