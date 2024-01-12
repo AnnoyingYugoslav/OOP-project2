@@ -425,16 +425,55 @@ public class userAccounthandler {
         Map<Integer, Object> resultMap = new HashMap<>();
         userArtist user = artistRepository.findUserById(id);
         Integer counter = 0;
+        resultMap.put(0, "fail");
         if(!(user instanceof userArtist)){
             String jsonResponse = convertMapToJson(resultMap);
             return jsonResponse;
         }
         String name = user.getName();
         imageBasic logo = user.getLogo();
-        resultMap.put(1, name);
-        resultMap.put(2, logo);
+        resultMap.put(0, name);
+        resultMap.put(1, logo);
         String jsonResponse = convertMapToJson(resultMap);
         return jsonResponse;
     }
+
+    @PostMapping("/changeispublic") //get 1: login 2: password 3: image id -> return 1:success
+    public String postMethodName(@RequestBody Map<Integer, Object> newMapData) {
+        Integer loginKey = 1;
+        Integer passwordKey = 2;
+        Integer imageKey = 3;
+        String login = (String) newMapData.get(loginKey);
+        String password = (String) newMapData.get(passwordKey);
+        Long id = (Long) newMapData.get(imageKey);
+        userArtist user = artistRepository.findIdByLogin(login);
+        Map<Integer, Object> resultMap = new HashMap<>();
+        imageBasic image = imageRepository.findImageById(id);
+        resultMap.put(0, "fail");
+        if(!(user instanceof userArtist)){
+            String jsonResponse = convertMapToJson(resultMap);
+            return jsonResponse;
+        }
+        if(!(image instanceof imageBasic)){
+            String jsonResponse = convertMapToJson(resultMap);
+            return jsonResponse;
+        }
+        if(user.checkUserAccount(login, password)){
+            if(image.getArtist() == user){
+                if(image.getIsPublic()){
+                    image.setIsPublic(false);
+                }
+                else{
+                    image.setIsPublic(true);
+                }
+                resultMap.put(0, "success");
+                String jsonResponse = convertMapToJson(resultMap);
+            return jsonResponse;
+            }
+        }
+        String jsonResponse = convertMapToJson(resultMap);
+        return jsonResponse;
+    }
+    
 
 }
