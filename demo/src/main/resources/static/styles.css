@@ -78,7 +78,8 @@ form button:hover {
   margin-left: 10px;
 }
 #images {
-  height: 300px;
+  max-height: 300px;
+  overflow: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -117,6 +118,7 @@ footer {
   height: 60px;
   justify-content: flex-end;
   padding: 10px;
+  clear: both;
 }
 footer button {
   margin: 0 5px;
