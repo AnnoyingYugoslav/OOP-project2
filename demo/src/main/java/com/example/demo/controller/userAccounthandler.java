@@ -191,6 +191,7 @@ public class userAccounthandler {
                         image = newImage;
                         viewer.changeLogo(newImage);
                         artistRepository.save(viewer);
+                        imageRepository.save(newImage);
                         resultMap.put(1,true);
                         String jsonResponse = convertMapToJson(resultMap);
                         return jsonResponse;
@@ -425,16 +426,103 @@ public class userAccounthandler {
         Map<Integer, Object> resultMap = new HashMap<>();
         userArtist user = artistRepository.findUserById(id);
         Integer counter = 0;
+        resultMap.put(0, "fail");
         if(!(user instanceof userArtist)){
             String jsonResponse = convertMapToJson(resultMap);
             return jsonResponse;
         }
         String name = user.getName();
         imageBasic logo = user.getLogo();
-        resultMap.put(1, name);
-        resultMap.put(2, logo);
+        resultMap.put(0, name);
+        resultMap.put(1, logo);
         String jsonResponse = convertMapToJson(resultMap);
         return jsonResponse;
     }
 
+    @PostMapping("/changeispublic") //get 1: login 2: password 3: image id -> return 1:success
+    public String postMethodName(@RequestBody Map<Integer, Object> newMapData) {
+        Integer loginKey = 1;
+        Integer passwordKey = 2;
+        Integer imageKey = 3;
+        String login = (String) newMapData.get(loginKey);
+        String password = (String) newMapData.get(passwordKey);
+        Integer id1 = (Integer) newMapData.get(imageKey);
+        Long id = id1.longValue();
+        userArtist user = artistRepository.findIdByLogin(login);
+        Map<Integer, Object> resultMap = new HashMap<>();
+        imageBasic image = imageRepository.findImageById(id);
+        resultMap.put(0, "fail");
+        if(!(user instanceof userArtist)){
+            String jsonResponse = convertMapToJson(resultMap);
+            return jsonResponse;
+        }
+        if(!(image instanceof imageBasic)){
+            String jsonResponse = convertMapToJson(resultMap);
+            return jsonResponse;
+        }
+        if(user.checkUserAccount(login, password)){
+            if(image.getArtist() == user){
+                if(image.getIsPublic()){
+                    image.setIsPublic(false);
+                }
+                else{
+                    image.setIsPublic(true);
+                }
+                resultMap.put(0, "success");
+                imageRepository.save(image);
+                String jsonResponse = convertMapToJson(resultMap);
+            return jsonResponse;
+            }
+        }
+        String jsonResponse = convertMapToJson(resultMap);
+        return jsonResponse;
+    }
+    @PostMapping("/getmyimages") //get 1: login 2: password -> return 1: number of returns 2 to n: images basic
+    public String getMyImages(@RequestBody Map<Integer, Object> newMapData){
+        Integer loginKey = 1;
+        Integer passwordKey = 2;
+        String login = (String) newMapData.get(loginKey);
+        String password = (String) newMapData.get(passwordKey);
+        Map<Integer, Object> resultMap = new HashMap<>();
+        userArtist user = artistRepository.findIdByLogin(login);
+        Integer counter = 0;
+        resultMap.put(0, 0);
+        if(!(user instanceof userArtist)){
+            String jsonResponse = convertMapToJson(resultMap);
+            return jsonResponse;
+        }
+        if(user.checkUserAccount(login, password)){
+            List<imageBasic> temp = user.getListOfArt();
+            for(Integer i = 0; i < temp.size(); i++){
+                resultMap.put(counter+2, temp.get(i));
+                counter++;
+            }
+        }
+        resultMap.put(0, counter);
+        String jsonResponse = convertMapToJson(resultMap);
+        return jsonResponse;
+    }
+    @PostMapping("/getuserfromimage") //get 1: id image -> return 1: false/true 2: name (if true)
+    public String getUserFromImage(@RequestBody Map<Integer, Object> newMapData){
+        Integer idKey = 1;
+        Integer id = (Integer) newMapData.get(idKey);
+        Long trueId = id.longValue();
+        Map<Integer, Object> resultMap = new HashMap<>();
+        resultMap.put(0, false);
+        imageBasic image = imageRepository.findImageById(trueId);
+        if(!(image instanceof imageBasic)){
+            String jsonResponse = convertMapToJson(resultMap);
+            return jsonResponse;
+        }
+        userArtist user = image.getArtist();
+        if(!(user instanceof userArtist)){
+            String jsonResponse = convertMapToJson(resultMap);
+            return jsonResponse;
+        }
+        String name = user.getName();
+        resultMap.put(0, true);
+        resultMap.put(1, name);
+        String jsonResponse = convertMapToJson(resultMap);
+        return jsonResponse;
+    }
 }

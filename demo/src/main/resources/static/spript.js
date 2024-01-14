@@ -1,17 +1,17 @@
 function Createa() {
-    // Get the field values
     const LoginValue = document.getElementById("Login").value;
     const PasswordValue = document.getElementById("Password").value;
     const NicknameValue = document.getElementById("Nickname").value;
-
-    // Create a JavaScript object with the field values
+    const info = document.getElementById("info");
+    if (LoginValue === '' || PasswordValue === '' || NicknameValue === '') {
+        info.innerHTML = "Please fill all the fields"
+    }
+    else{
     const data = {
         1: LoginValue,
         2: PasswordValue,
         3: NicknameValue
     };
-
-    // Send the data to the backend
     fetch('/createaccount', {
         method: 'POST',
         headers: {
@@ -26,14 +26,13 @@ function Createa() {
         return response.json();
     })
     .then(data => {
-        // Check the value associated with key 1
         const isSuccess = data[1];
-
         if (isSuccess === true) {
             console.log("Info: Creation true");
             document.location.href="index.html?success";
         } else if (isSuccess === false) {
             console.log("Info: Creation false");
+            info.innerHTML="Such account already exists";
         } else {
             console.log("Info: Unknown condition");
         }
@@ -42,19 +41,19 @@ function Createa() {
         console.error('Error:', error.message);
     });
 }
-// script.js
+}
 function Logina() {
-    // Get the field values
     const LoginValue = document.getElementById("Login").value;
     const PasswordValue = document.getElementById("Password").value;
-
-    // Create a JavaScript object with the field values
+    const info = document.getElementById("info");
+    if (LoginValue === '' || PasswordValue === ''){
+        info.innerHTML = "Please fill all the fields"
+    }
+    else{
     const data = {
         1: LoginValue,
         2: PasswordValue
     };
-
-    // Send the data to the backend
     fetch('/login', {
         method: 'POST',
         headers: {
@@ -64,7 +63,6 @@ function Logina() {
     })
     .then(response => response.json())
     .then(responseData => {
-        // Log the received data to the console
         console.log("Received data:");
         console.log("1:", responseData[1]);
         console.log("2:", responseData[2]);
@@ -85,6 +83,7 @@ function Logina() {
     .catch(error => {
         console.error('Error:', error);
     });
+}
 }
 function returnp(){
     if (sessionStorage.getItem('Logo') == 'undefined'){
@@ -134,7 +133,7 @@ function chpswd() {
         else{
             const infoElement = document.getElementById('info');
             document.getElementById("myForm").reset();
-            infoElement.innerText = 'Podano zle haslo';
+            infoElement.innerText = 'Wrong password';
         } 
     })
     .catch(error => {
@@ -143,12 +142,11 @@ function chpswd() {
 }
 function getrandomimages() {
     const imageContainer = document.getElementById('images');
-    const Amount = 3;
-    console.log(Amount);
+    const info = document.getElementById('info');
+    const Amount = 5;
     const data = {
         1: Amount
     };
-
     fetch('/getrandomimages', {
         method: 'POST',
         headers: {
@@ -161,16 +159,26 @@ function getrandomimages() {
         imageContainer.innerHTML = '';
         console.log("Received data:");
         console.log("0:", responseData[0]);
-        for (let i = 2; i <= Amount + 1; i++){
+        for (let i = 2; i <= Amount + 1; i++) {
+            const Container = document.createElement('div');
+            Container.className = 'image-container';
             console.log(i, responseData[i].imageData);
             const imageInfo = responseData[i].imageData;
-            const imgElement = document.createElement('img');
-            imgElement.src = imageInfo;
-            console.log(imageInfo);
-            imgElement.alt = 'Random Image';
-            imgElement.width = 200;
-            imgElement.height = 200; 
-            imageContainer.appendChild(imgElement);
+            const imageID = responseData[i].id;
+            getuserfromimage(imageID, function(artistInfo) {
+                console.log('Artist: ' + artistInfo);
+                const imgElement = document.createElement('img');
+                const artistElement = document.createElement('p');
+                artistElement.innerText = 'Artist: ' + artistInfo;
+                imgElement.src = imageInfo;
+                imgElement.alt = 'Random Image';
+                imgElement.width = 200;
+                imgElement.height = 200;
+                Container.appendChild(imgElement);
+                Container.appendChild(artistElement);
+                imageContainer.appendChild(Container);
+            });
+            info.innerHTML="";
         }
     })
     .catch(error => {
@@ -179,7 +187,8 @@ function getrandomimages() {
 }
 function getnewimages() {
     const imageContainer = document.getElementById('images');
-    const Amount = 3;
+    const info = document.getElementById('info');
+    const Amount = 5;
     console.log(Amount);
     const data = {
         1: Amount
@@ -198,15 +207,25 @@ function getnewimages() {
         console.log("Received data:");
         console.log("0:", responseData[0]);
         for (let i = 2; i <= Amount + 1; i++){
+            const Container = document.createElement('div');
+            Container.className = 'image-container';
             console.log(i, responseData[i].imageData);
             const imageInfo = responseData[i].imageData;
-            const imgElement = document.createElement('img');
-            imgElement.src = imageInfo;
-            console.log(imageInfo);
-            imgElement.alt = 'Random Image';
-            imgElement.width = 200;
-            imgElement.height = 200; 
-            imageContainer.appendChild(imgElement);
+            const imageID = responseData[i].id;
+            getuserfromimage(imageID, function(artistInfo) {
+                console.log('Artist: ' + artistInfo);
+                const imgElement = document.createElement('img');
+                const artistElement = document.createElement('p');
+                artistElement.innerText = 'Artist: ' + artistInfo;
+                imgElement.src = imageInfo;
+                imgElement.alt = 'Random Image';
+                imgElement.width = 200;
+                imgElement.height = 200;
+                Container.appendChild(imgElement);
+                Container.appendChild(artistElement);
+                imageContainer.appendChild(Container);
+            });
+            info.innerHTML="";
         }
     })
     .catch(error => {
@@ -216,7 +235,7 @@ function getnewimages() {
 function getuserimages() {
     const imageContainer = document.getElementById('images');
     const userid = document.getElementById('textInput').value;
-    document.getElementById('inputPopup').style.display = 'none';
+    const info = document.getElementById('info');
     const data = {
         1: userid
     };
@@ -246,6 +265,7 @@ function getuserimages() {
                 imgElement.width = 200;
                 imgElement.height = 200; 
                 imageContainer.appendChild(imgElement);
+                info.innerHTML="";
             }
         } 
     })
@@ -253,9 +273,144 @@ function getuserimages() {
         console.error('Error:', error);
     });
 }
-function searchuser() {
-    document.getElementById('inputPopup').style.display = 'block';
+function gettagimages() {
+    const imageContainer = document.getElementById('images');
+    const tagid = document.getElementById('selecttag').value;
+    const info = document.getElementById('info');
+    const number = 5;
+    const data = {
+        1: number,
+        2: tagid
+    };
+    fetch('/gettagimages', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        imageContainer.innerHTML = '';
+        Amount = responseData[0];
+        console.log(responseData[0]);
+        console.log(responseData[1]);
+        console.log(responseData[2]);
+        if (Amount==0){
+            const infoElement = document.getElementById('info');
+            infoElement.innerText = 'Nothing has been found';
+        }
+        else{
+            for (let i = 2; i <= Amount + 1; i++){
+                const Container = document.createElement('div');
+                Container.className = 'image-container';
+                const imageInfo = responseData[i].imageData;
+                const imageID = responseData[i].id;
+                getuserfromimage(imageID, function(artistInfo) {
+                    console.log('Artist: ' + artistInfo);
+                    const imgElement = document.createElement('img');
+                    const artistElement = document.createElement('p');
+                    artistElement.innerText = 'Artist: ' + artistInfo;
+                    imgElement.src = imageInfo;
+                    imgElement.alt = 'Random Image';
+                    imgElement.width = 200;
+                    imgElement.height = 200;
+                    Container.appendChild(imgElement);
+                    Container.appendChild(artistElement);
+                    imageContainer.appendChild(Container);
+                });
+            }
+        }
+        info.innerHTML="";
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
+function searchyou() {
+    const imageContainer = document.getElementById('images');
+    const Login = sessionStorage.getItem("Login");
+    const Password = sessionStorage.getItem("Password");
+    const info = document.getElementById('info');
+    const data = {
+        1: Login,
+        2: Password
+    };
+
+    fetch('/getmyimages', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        imageContainer.innerHTML = '';
+        Amount = responseData[0];
+        console.log(responseData[0]);
+
+        if (Amount == 0) {
+            const infoElement = document.getElementById('info');
+            infoElement.innerText = 'Nothing has been found';
+        } else {
+            for (let i = 2; i <= Amount + 1; i++) {
+                const Container = document.createElement('div');
+                Container.className = 'image-container';
+                const imageInfo = responseData[i].imageData;
+                const publicInfo = responseData[i].isPublic;
+                const imageId = responseData[i].id;
+                console.log(imageId);
+
+                const imgElement = document.createElement('img');
+                imgElement.src = imageInfo;
+                imgElement.alt = 'Random Image';
+                imgElement.width = 200;
+                imgElement.height = 200;
+                Container.appendChild(imgElement);
+                const publicElement = document.createElement('input');
+                publicElement.type = 'checkbox';
+                publicElement.checked = !publicInfo;
+                publicElement.addEventListener('change', () => changeispublic(imageId));
+                const publicLabel = document.createElement('label');
+                publicLabel.innerText = 'Is Private';
+                Container.appendChild(publicElement);
+                Container.appendChild(publicLabel);
+                imageContainer.appendChild(Container);
+            }
+        } 
+        info.innerHTML="";
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+function changeispublic(imageInfopublic) {
+    const imageInfo = imageInfopublic;
+    const Login = sessionStorage.getItem("Login");
+    const Password = sessionStorage.getItem("Password");
+    const data = {
+        1: Login,
+        2: Password,
+        3: imageInfo
+    };
+    console.log(data);
+    fetch('/changeispublic', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        console.log(responseData[0]);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 const urlParams = new URLSearchParams(window.location.search);
 
 if (urlParams.has('success')) {
@@ -275,8 +430,10 @@ let tagList = new Set();
 function saveTag(checkbox) {
     if (checkbox.checked) {
         tagList.add(checkbox.value);
+        console.log(tagList);
     } else {
         tagList.delete(checkbox.value);
+        console.log(tagList);
     }
 }
 function UploadI() {
@@ -311,6 +468,26 @@ function UploadI() {
         console.log("Received data:");
         console.log("0:", responseData[0]);
         document.location.href="artistpage.html?success3=true";
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+function getuserfromimage(imageId, callback) {
+    const data = {
+        1: imageId
+    };
+    fetch('/getuserfromimage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        console.log(responseData[1]);
+        callback(responseData[1]);
     })
     .catch(error => {
         console.error('Error:', error);

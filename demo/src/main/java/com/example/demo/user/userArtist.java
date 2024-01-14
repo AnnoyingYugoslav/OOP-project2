@@ -61,7 +61,7 @@ public class userArtist extends userAccount{
         return nowe;
     }
     public void changeLogo(imageBasic newlogo){
-        this.listOfArt.addFirst(newlogo);
+        this.listOfArt.set(0, newlogo);
     }
     public void addImage(imageBasic newImage){
         this.listOfArt.add(newImage);

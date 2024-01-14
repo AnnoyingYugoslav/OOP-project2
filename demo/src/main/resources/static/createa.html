@@ -6,23 +6,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="witaj">
+    <header>
         <h1>Account creation</h1>
-      </div>
-    <div id="srodek">
+    </header>
+    <main>
     <h1>Create a new account:</h1>
     <form>
         <label for="Login">Login</label>
-        <input type="text" id="Login" name="Login"><br>
+        <input type="text" id="Login" name="Login" required>
         <label for="Password">Password</label>
-        <input type="password" id="Password" name="Password"><br>
+        <input type="password" id="Password" name="Password" required>
         <label for="Nickname">Nickname</label>
-        <input type="text" id="Nickname" name="Nickname"><br><br>
+        <input type="text" id="Nickname" name="Nickname" required>
         <button type="button" onclick="Createa()">Create account</button>
         <a href="index.html">
         <button type="button">Back to main page</button>
         </a>
     </form>
+    <div id="info"></div>
+    </main>
     <script src="spript.js"></script>
 </body>
 </html>

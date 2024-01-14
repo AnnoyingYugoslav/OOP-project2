@@ -45,19 +45,14 @@ color.addEventListener('click', function () {
 createcanvas()
 
 function convert() {
-    // Get the field values
     const LoginValue = sessionStorage.getItem('Login');
     const PasswordValue = sessionStorage.getItem('Password');
     const LogoValue = sessionStorage.getItem('Logo');
-
-    // Create a JavaScript object with the field values
     const data = {
         1: LoginValue,
         2: PasswordValue,
         3: LogoValue
     };
-
-    // Send the data to the backend
     fetch('/convert', {
         method: 'POST',
         headers: {
@@ -67,7 +62,6 @@ function convert() {
     })
     .then(response => response.json())
     .then(responseData => {
-        // Log the received data to the console
         console.log("Received data:");
         console.log("1:", responseData[1]);
         if (responseData[1]){
@@ -84,13 +78,10 @@ function convert() {
     });
 }
 function changelogo(){
-// Get the field values
 const LoginValue = sessionStorage.getItem('Login');
 const PasswordValue = sessionStorage.getItem('Password');
 const NicknameValue = sessionStorage.getItem("Nickname");
 const LogoValue = sessionStorage.getItem('Logo');
-
-// Create a JavaScript object with the field values
 const data = {
     1: LoginValue,
     2: PasswordValue,
@@ -98,7 +89,6 @@ const data = {
     4: LogoValue
 };
 
-// Send the data to the backend
 fetch('/changdetail', {
     method: 'POST',
     headers: {
@@ -108,7 +98,6 @@ fetch('/changdetail', {
 })
 .then(response => response.json())
 .then(responseData => {
-    // Log the received data to the console
     console.log("Received data:");
     console.log("1:", responseData[1]);
     if (responseData[1]){
