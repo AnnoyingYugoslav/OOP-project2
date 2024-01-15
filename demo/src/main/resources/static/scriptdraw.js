@@ -66,11 +66,11 @@ function convert() {
         console.log("1:", responseData[1]);
         if (responseData[1]){
             const infoElement = document.getElementById('info');
-            infoElement.innerText = 'Logo zostało utworzone!';
+            infoElement.innerText = 'Logo has been created!';
         }
         else{
             const infoElement = document.getElementById('info');
-            infoElement.innerText = 'Wystąpił błąd';
+            infoElement.innerText = 'Error';
         } 
     })
     .catch(error => {
