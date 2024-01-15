@@ -14,7 +14,7 @@ public class DemoApplication {
 	}
 	@GetMapping("/test")
 	public String website(){
-		String napis = " testowanie z babcią";
+		String napis = " test";
 		return napis;
 	}
 }

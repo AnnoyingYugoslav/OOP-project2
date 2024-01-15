@@ -101,9 +101,14 @@ function chpswd() {
     const LoginValue = sessionStorage.getItem('Login');
     const PasswordValue = document.getElementById("Password").value;
     const Password2Value = document.getElementById("Password2").value;
+    const info = document.getElementById("info");
     console.log(LoginValue);
     console.log(PasswordValue);
     console.log(Password2Value);
+    if (LoginValue === '' || PasswordValue === ''){
+        info.innerHTML = "Please fill all the fields"
+    }
+    else{
     const data = {
         1: LoginValue,
         2: PasswordValue,
@@ -139,6 +144,7 @@ function chpswd() {
     .catch(error => {
         console.error('Error:', error);
     });
+}
 }
 function getrandomimages() {
     const imageContainer = document.getElementById('images');
